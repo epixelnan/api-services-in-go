@@ -1,0 +1,144 @@
+\documentclass{beamer}
+\usepackage{listings}
+\usepackage{graphicx}
+
+\setbeamertemplate{headline}{}
+
+\lstset{
+frame=single
+}
+
+\begin{document}
+
+\title{Writing API Services in Go}
+\author{Nandakumar Edamana}
+
+\maketitle
+
+\begin{frame}[fragile]{Question}
+What do you mean by API Server Software? Think about a single program that
+serves an API. How does it differ from a program that accepts two numbers
+via the command line, prints the sum and quits?
+\end{frame}
+
+\begin{frame}[fragile]{API Server Characteristics}
+\begin{itemize}
+  \pause \item Daemon
+  \pause \item Serves API over HTTP over TCP
+  \pause \item Sticks to something like REST (quality of the API rather than
+               the program itself)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Levels}
+\begin{itemize}
+  \item HTTP server in Go using no third-party libraries
+  \item HTTP server in Go using a third-party router (chi)
+  \item Auto-generation of boilerplate using OpenAPI
+  \item Writing multiple services and combining them using an API Gateway
+\end{itemize}
+
+NOTE: OpenAPI is for more than mere code generation.
+
+\end{frame}
+
+\begin{frame}[fragile]{Packages}
+\begin{itemize}
+  \item net/http - Built-in library for HTTP client, server and mux; supports middlewares, does not support RegEx path matching.
+  \item chi, gorilla/mux, etc. - Feature-rich HTTP routers
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Hello World}
+\begin{lstlisting}
+mkdir 1-hello-world && cd 1-hello-world
+go mod init helloapi
+# "to add module requirements and sums"
+go mod tidy
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Hello World}
+\begin{lstlisting}[language=Go]
+package main
+
+import (
+  "fmt"
+  "log"
+  "net/http"
+)
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Hello World}
+\begin{lstlisting}[language=Go]
+func main() {
+  // Adds to DefaultServeMux
+  // Note: you can use anonymous functions
+  http.HandleFunc("/", handleIndex)
+  http.HandleFunc("/hello", handleHello)
+  
+  fmt.Println("Listening at :8080...")
+  
+  // Address and handler;
+  // handler = nil means DefaultServeMux
+  err := http.ListenAndServe(":8080", nil)
+  if err != nil {
+    log.Fatal(err)
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Hello World}
+\begin{lstlisting}[language=Go]
+func handleHello(w http.ResponseWriter,
+                 r *http.Request) {
+
+  w.Write([]byte("world!\n"))
+}
+
+func handleIndex(w http.ResponseWriter,
+                 r *http.Request) {
+
+  w.Write([]byte("Welcome!\n"))
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Hello World}
+\begin{lstlisting}
+$ go run .
+Listening at :8080...
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Hello World}
+\begin{lstlisting}
+$ curl localhost:8080/
+Welcome!
+
+$ curl localhost:8080/hello
+world!
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Hello World}
+\begin{lstlisting}
+$ go run .
+Listening at :8080...
+^Csignal: interrupt
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{The Complexity Underneath}
+See the manpage of bind(2) and add forked or threaded serving.
+\end{frame}
+
+\begin{frame}{Questions?}
+\end{frame}
+
+\begin{frame}{Thank You}
+\end{frame}
+
+\end{document}

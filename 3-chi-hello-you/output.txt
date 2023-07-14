@@ -1,0 +1,15 @@
+eps114-epixel@eps114-Epixel:~/epsnan/kt/go-api-hands-on/3-chi-hello-you$ go run .
+Listening at :8091...
+2023/07/13 15:47:41 "GET http://localhost:8091/ HTTP/1.1" from 127.0.0.1:42714 - 200 9B in 26.412µs
+2023/07/13 15:47:44 "GET http://localhost:8091/hello HTTP/1.1" from 127.0.0.1:38200 - 404 19B in 43.973µs
+2023/07/13 15:47:48 "GET http://localhost:8091/hello/Nandakumar HTTP/1.1" from 127.0.0.1:38210 - 200 19B in 53.84µs
+
+---
+
+eps114-epixel@eps114-Epixel:~/epsnan/kt/go-api-hands-on/3-chi-hello-you$ curl localhost:8091
+Welcome!
+eps114-epixel@eps114-Epixel:~/epsnan/kt/go-api-hands-on/3-chi-hello-you$ curl localhost:8091/hello
+404 page not found
+eps114-epixel@eps114-Epixel:~/epsnan/kt/go-api-hands-on/3-chi-hello-you$ curl localhost:8091/hello/Nandakumar
+Hello, Nandakumar!
+eps114-epixel@eps114-Epixel:~/epsnan/kt/go-api-hands-on/3-chi-hello-you$ 
